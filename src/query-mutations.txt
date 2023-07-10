@@ -1,0 +1,97 @@
+// user 
+
+query{
+  allUser{
+    name,
+    surname,
+    phone,
+    email,
+  }
+}
+
+mutation createUser($createUser: CreateUserInput!) {
+  createUser(createUser: $createUser) {
+    name,
+    surname,
+    email,
+    phone,
+    password
+  }
+}
+
+query{
+  findUserBiId (id: "649bc6d39ce76c967f389eb5"){
+    id,
+    name
+  }
+}
+
+mutation{
+  deleleUser(id: "649bc6d39ce76c967f389eb5"){
+    id
+  }
+}
+
+mutation{
+  updateUser(id: "649e60044d7883d47dba2e47", updateUserInput: {
+    id: "649e60044d7883d47dba2e47"
+    name: "FELIPE",
+    surname: "palma",
+    phone: "0973352613",
+    email: "pafhblhdf@gmail.com"
+  }){
+    id
+    name
+    surname
+    phone
+    email
+  }
+}
+
+
+// hobby
+
+query{
+  allHobies{
+    descripcion,
+    nombre,
+    lugar_pasatiempo,
+    tipo_pasatiempo
+  }
+}
+
+mutation createHobby($createHobby: CreateHobbyInput!) {
+  createHobby(createHobby: $createHobby) {
+    tipo_pasatiempo,
+    lugar_pasatiempo,
+    nombre,
+    descripcion
+  }
+}
+
+mutation{
+  updateHobby(id: "649bc3ead9382e7b2dd72d4c", updateHobbyInput: {
+    id: "649bc3ead9382e7b2dd72d4c"
+    tipo_pasatiempo: "musiica"
+    lugar_pasatiempo: "auditorio"
+    nombre: "musica clasica"
+  }){
+    id
+    tipo_pasatiempo
+    lugar_pasatiempo
+    nombre
+  }
+}
+
+query{
+  findHobbyBiId(id: "649bc3ead9382e7b2dd72d4c"){
+    id,
+    nombre
+  }
+}
+
+mutation{
+  deleleHobby(id: "649f595bdb27d139d140e9ac"){
+    id
+  }
+}
