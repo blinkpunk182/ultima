@@ -1,19 +1,45 @@
-name: CI
+name: Docker Image CI 
 on:
   push:
-    branches: [ master ]
+    branches: [ "main" ]
   pull_request: 
-    branches: [ master ]
+    branches: [ "main" ]
   workflow_dispatch: 
 jobs: 
   build: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Scripts
+      - name: Checkout code 
+
+        uses: actions/checkout@v3
+        
+        with: 
+        
+          fetch-depth: 0 
+      - name: Git Semantic Version 
+        uses: PaulHatch/semantic-version@v4.0.3
+        with: 
+          major_pattern: "major:"         
+          minor_pattern: "feat:" 
+          format: "${major}.${minor}.${patch}-prerelease${increment}" 
+        id: version 
+      - name: Docker Login 
+        env:         
+          DOCKER_USER: ${{ secrets.Docker_User }}         
+          DOCKER_PASSWORD: ${{ secrets.Docker_Password }} 
         run: |
-         docker build -t app .
-         echo ${{ secrets.Docker_User}} | docker login -u ${{ secrets.Docker_Password }} --stdin-password
-         docker tag app greyeslucas/practicasis
-         docker push greyeslucas/practicasis
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          
+      - name: Build Docker Image 
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t greyeslucas/practicasis:$NEW_VERSION .
+          docker build -t greyeslucas/practicasis:latest .
+          
+      - name: Push Docker Image 
+        env: 
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: | 
+          docker push greyeslucas/practicasis:$NEW_VERSION 
+          docker push greyeslucas/practicasis:latest
