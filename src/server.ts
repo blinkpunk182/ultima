@@ -61,7 +61,7 @@ export class Server {
   public listen() {
     this.app.listen(this.app.get("port"), () => {
       console.log(
-        `Server está corriendo en el puerto http://localhost:${this.app.get(
+        `Server está en el puerto http://localhost:${this.app.get(
           "port"
         )}`
       )
