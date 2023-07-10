@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request: 
+    branches: [ master ]
+  workflow_dispatch: 
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Scripts
+        run: |
+         docker build -t app .
+         echo ${{ secrets.Docker_User}} | docker login -u ${{ secrets.Docker_Password }} --stdin-password
+         docker tag app greyeslucas/practicasis
+         docker push greyeslucas/practicasis
